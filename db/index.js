@@ -11,30 +11,22 @@ const Marker = db.define('marker', {
   long: {
     type: Sequelize.FLOAT,
     allowNull: false
+  },
+  altitude: {
+    type: Sequelize.FLOAT,
   }
-  // altitude: {
-  //   type: Sequelize.FLOAT,
-  //   allowNull: false
-  // }
 });
 
 
-Marker.findAllInRadius = function(radius){
-    // Places.findAll({
-    // attributes: [sequelize.fn('ST_DISTANCE', sequelize.literal('lat_lng'), sequelize.literal('ST_MakePoint(-126.4, 45.32)::geography')]
-    // });
-    // let location = Sequelize.literal(`ST_GeomFromText('POINT(${this.lat} ${this.long})')`)
-    // let distance = sequelize.fn('ST_Distance_Sphere', sequelize.literal('geolocation'), WebGLUniformLocation);
-    
-    // Marker.findAll({
-    //     order: 'distance',
-    //     where: sequelize.where(distance, {$lte: radius}),
-    //   })
-    //   .then(function(instance){
-    //     console.log(instance)
-    //     return res.json(200, instance);
-    //   })
-
+Marker.prototype.findNearby = function(radius){
+  const location = Sequelize.literal(`ST_GeomFromText('POINT(${this.long} ${this.lat})')`)
+  const distance = Sequelize.fn('ST_Distance_Sphere', Sequelize.col('point'), location)
+  //  ['attribute definition', 'alias']
+  return Marker.findAll({
+    attributes: ['id', [Sequelize.fn('ST_Distance_Sphere', Sequelize.literal('point'), location), 'distance']],
+    where: Sequelize.where(distance, { $lte: radius }),
+    order: distance
+  })
 }
 
 module.exports = {Marker, db};

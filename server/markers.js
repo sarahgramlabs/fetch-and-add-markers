@@ -15,18 +15,10 @@ module.exports = require('express').Router()
       .catch(next))
   .get('/nearby/:markerId/:radius',
   (req, res, next) => // get surrounding markers by user specified radius
-  {let radius = req.params.radius, id = req.params.markerId
-    Marker.findById(id)
+  {
+    Marker.findById(req.params.markerId)
     .then(marker => {
-      const location = Sequelize.literal(`ST_GeomFromText('POINT(${marker.long} ${marker.lat})')`)
-      const distance = Sequelize.fn('ST_Distance_Sphere', Sequelize.col('point'), location)
-      //  ['attribute definition', 'alias']
-      return Marker.findAll({
-        attributes: [[Sequelize.fn('ST_Distance_Sphere', Sequelize.literal('point'), location), 'distance']],
-        where: Sequelize.where(distance, { $lte: radius }),
-        order: distance,
-        logging: console.log
-      })
+      return marker.findNearby(req.params.radius)
     })
     .then(markers => res.send(markers))
     .catch(next)
