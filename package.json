@@ -1,0 +1,28 @@
+{
+  "name": "add-and-fetch-markers",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "express": "^4.16.2",
+    "pg": "^7.3.0",
+    "sequelize": "^4.15.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed": "node db/seed.js",
+    "start": "node server/start.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sarahgramlabs/fetch-and-add-markers.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sarahgramlabs/fetch-and-add-markers/issues"
+  },
+  "homepage": "https://github.com/sarahgramlabs/fetch-and-add-markers#readme"
+}
