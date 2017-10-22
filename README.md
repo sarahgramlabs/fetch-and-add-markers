@@ -14,17 +14,18 @@ Start the server and db connection:
 ```
 npm run start
 ```
+
 Run this line of SQL in your db to create PostGis extension:
 ```
 CREATE EXTENSION postgis;
-``
+```
 
-Seed the db with random markers in the northern hemisphere
+Seed the db with random markers in the northern hemisphere:
 ```
 npm run seed
 ```
 
-Run tests
+Run tests:
 ```
 npm run test
 ```

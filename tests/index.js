@@ -67,6 +67,7 @@ describe('Testing Markers', () => {
 
 
     it('gets all markers', () => {
+        console.log('Added three markers in downtown NYC and one marker in uptown NYC')
         return agent
             .get('/markers/')
             .expect(200)
@@ -98,7 +99,7 @@ describe('Testing Markers', () => {
             .expect(200)
             .then(res => {
                 const newMarker = res.body;
-                return Marker.findById(newMarker.id)
+                return Marker.findById(newMarker.id);
             })
             .then(newMarker => {
                 expect(newMarker.long).to.be.equal(40.7128);
