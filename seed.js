@@ -1,15 +1,13 @@
 const db = require('./db').db;
 const Marker = require('./db').Marker;
 const Promise = require('bluebird')
-
-
-// randomize long and lat
 const markers =  [];
+
 db.sync({force: true})
   .then(() => {
     let i = 0;
-    while(i < 500){
-      markers.push({lat: +(Math.random() * (180 - (-180)) - 180).toFixed(4), long: +(Math.random() * (180 - (-180)) - 180).toFixed(4)})
+    while(i < 500){ // adding markers in the same hemisphere
+      markers.push({lat: +(Math.random() * (45 - 44) + 44).toFixed(4), long: +(Math.random() * (-80 + 82) - 80).toFixed(4)})
       i++
     }
     return markers

@@ -1,6 +1,6 @@
-const db = require('../db').db
-const Marker = require('../db').Marker
-const Sequelize = require('sequelize') // testing will delete
+const db = require('../db').db;
+const Marker = require('../db').Marker;
+const Sequelize = require('sequelize');
 
 module.exports = require('express').Router()
   .get('/', // get all marker information
@@ -13,13 +13,11 @@ module.exports = require('express').Router()
       Marker.findById(req.params.markerId)
       .then(marker => res.send(marker))
       .catch(next))
-  .get('/nearby/:markerId/:radius',
+  .get('/nearby/:markerId/',
   (req, res, next) => // get surrounding markers by user specified radius
   {
     Marker.findById(req.params.markerId)
-    .then(marker => {
-      return marker.findNearby(req.params.radius)
-    })
+    .then(marker => marker.findNearby(req.body.radius))
     .then(markers => res.send(markers))
     .catch(next)
   })
@@ -28,7 +26,8 @@ module.exports = require('express').Router()
         Marker.create({
             long: req.body.long,
             lat: req.body.lat,
-            type: req.body.type || null,
+            altitutde: req.body.alt || null,
+            point: {type: 'Point', coordinates: [req.body.lat, req.body.long]}            
         })
         .then(marker => res.send(marker))
         .catch(next))

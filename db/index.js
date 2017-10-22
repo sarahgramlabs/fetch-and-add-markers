@@ -17,12 +17,11 @@ const Marker = db.define('marker', {
   }
 });
 
-
-Marker.prototype.findNearby = function(radius){
+Marker.prototype.findNearby = function(radius){ // radius is in meters
   const location = Sequelize.literal(`ST_GeomFromText('POINT(${this.long} ${this.lat})')`)
   const distance = Sequelize.fn('ST_Distance_Sphere', Sequelize.col('point'), location)
-  //  ['attribute definition', 'alias']
-  return Marker.findAll({
+
+  return Marker.findAll({ //  ['attribute definition', 'alias']
     attributes: ['id', [Sequelize.fn('ST_Distance_Sphere', Sequelize.literal('point'), location), 'distance']],
     where: Sequelize.where(distance, { $lte: radius }),
     order: distance
